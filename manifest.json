@@ -1,6 +1,6 @@
 {
   "name": "CrackTheTag",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "manifest_version": 3,
   "description": "Unlock company tags on LeetCode problems for free. See which companies ask every question — no premium needed.",
   "permissions": ["storage"],

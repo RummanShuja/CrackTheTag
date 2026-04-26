@@ -96,7 +96,7 @@ CrackTheTag/
 
 The company frequency data (`final.json`) is **not included** in this repository.
 
-The data covers **1600+ LeetCode problems** across **100+ companies** including Amazon, Google, Microsoft, Meta, Apple, and more.
+The data covers **3200+ LeetCode problems** across **630+ companies** including Amazon, Google, Microsoft, Meta, Apple, and more.
 
 Each problem includes:
 - List of companies that ask it
@@ -109,9 +109,11 @@ The extension on the Chrome Web Store comes pre-bundled with this data.
 
 The company data used in this extension is derived from the dataset maintained by:
 
-👉 [LeetCode-Questions-CompanyWise](https://github.com/krishnadey30/LeetCode-Questions-CompanyWise) by [@krishnadey30](https://github.com/krishnadey30)
+👉 [LeetCode CompanyWise Interview Questions](https://github.com/snehasishroy/leetcode-companywise-interview-questions) by [@snehasishroy](https://github.com/snehasishroy)
 
-The raw data has been processed, scored, and classified into priority tiers for use in this extension.
+The raw data has been processed using recency-weighted scoring across multiple time windows (30 days, 3 months, 6 months, 6+ months) and classified into priority tiers for use in this extension.
+
+**Last updated:** Feb 2026
 
 ---
 
