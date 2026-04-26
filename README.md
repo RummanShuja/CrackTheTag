@@ -28,13 +28,13 @@ CrackTheTag is a Chrome extension that reveals which companies ask every LeetCod
 ---
 
 ## 📸 Screenshots
-![img1](https://github.com/RummanShuja/CrackTheTag/blob/f477f9e4518d78c0a74a6f3fddc4a81889115ce0/screenshots/img1.png?raw=true)
+![img1](https://github.com/RummanShuja/CrackTheTag/blob/4a686a5fff88b1c3a93b5cc76de44c3e8dab0d9d/screenshots/img1.png?raw=true)
 
-![img2](https://github.com/RummanShuja/CrackTheTag/blob/f477f9e4518d78c0a74a6f3fddc4a81889115ce0/screenshots/img2.png?raw=true)
+![img2](https://github.com/RummanShuja/CrackTheTag/blob/4a686a5fff88b1c3a93b5cc76de44c3e8dab0d9d/screenshots/img2.png?raw=true)
 
-![img3](https://github.com/RummanShuja/CrackTheTag/blob/f477f9e4518d78c0a74a6f3fddc4a81889115ce0/screenshots/img3.png?raw=true)
+![img3](https://github.com/RummanShuja/CrackTheTag/blob/4a686a5fff88b1c3a93b5cc76de44c3e8dab0d9d/screenshots/img3.png?raw=true)
 
-![img4](https://github.com/RummanShuja/CrackTheTag/blob/f477f9e4518d78c0a74a6f3fddc4a81889115ce0/screenshots/img4.png?raw=true)
+![img4](https://github.com/RummanShuja/CrackTheTag/blob/4a686a5fff88b1c3a93b5cc76de44c3e8dab0d9d/screenshots/img4.png?raw=true)
 
 ---
 
