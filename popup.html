@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CrackTheTag</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <!-- Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="problem">Problem</button>
+      <button class="tab-btn" data-tab="companies">Companies</button>
+    </div>
+
+    <!-- Tab 1: Current Problem -->
+    <div id="tab-problem" class="tab-content active">
+      <div id="problem" class="popup-problem">Loading...</div>
+      <div id="meta" class="popup-meta"></div>
+      <div id="problem-companies" class="popup-companies"></div>
+    </div>
+
+    <!-- Tab 2: Browse by Company -->
+    <div id="tab-companies" class="tab-content">
+      <div class="search-wrap">
+        <input
+          type="text"
+          id="company-search"
+          placeholder="Search companies..."
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label class="filter-label">Sort</label>
+          <div class="filter-pills" id="sort-pills">
+            <button class="filter-pill active" data-sort="count">Most Problems</button>
+            <button class="filter-pill" data-sort="importance">Importance</button>
+            <button class="filter-pill" data-sort="az">A → Z</button>
+            <button class="filter-pill" data-sort="za">Z → A</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Priority</label>
+          <div class="filter-pills" id="priority-pills">
+            <button class="filter-pill active" data-priority="all">All</button>
+            <button class="filter-pill high" data-priority="high">High</button>
+            <button class="filter-pill medium" data-priority="medium">Med</button>
+            <button class="filter-pill low" data-priority="low">Low</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="company-stats" class="company-stats"></div>
+      <div id="company-list" class="company-list">
+        <div class="loading-text">Loading company data...</div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

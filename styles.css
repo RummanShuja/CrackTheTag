@@ -1,0 +1,186 @@
+/* =============================================
+   Get me CTags — LeetCode Injected Styles
+   Dark mode (default) + Light mode overrides
+   ============================================= */
+
+/* --- Priority Badge --- */
+.ctags-priority-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+  padding: 3px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  background: rgba(255, 161, 22, 0.15);
+  color: #ffa116;
+  font-weight: 600;
+  white-space: nowrap;
+  vertical-align: middle;
+  line-height: 1.5;
+}
+
+/* --- Company Button (dark) --- */
+.ctags-company-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: normal;
+  border-radius: 50px;
+  cursor: pointer;
+  background: hsla(0, 0%, 100%, 0.08);
+  color: #ffa116;
+  line-height: 22px;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.ctags-company-btn:hover {
+  background: hsla(0, 0%, 100%, 0.14);
+  color: #ffb84d;
+}
+
+.ctags-company-btn .ctags-lock-icon {
+  width: 12px;
+  height: 12px;
+  fill: #ffa116;
+  flex-shrink: 0;
+}
+
+/* --- Wrapper --- */
+.ctags-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* --- Dropdown (dark) --- */
+.ctags-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 10000;
+  background: #303030;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 14px 16px;
+  min-width: 340px;
+  max-width: 500px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+  animation: ctags-fade-in 0.12s ease-out;
+}
+
+.ctags-dropdown.ctags-visible {
+  display: block;
+}
+
+@keyframes ctags-fade-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ctags-dropdown-header {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ctags-company-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ctags-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.78);
+  white-space: nowrap;
+  cursor: default;
+  transition: background 0.15s ease;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.ctags-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.ctags-no-data {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  font-style: italic;
+  padding: 10px 0;
+}
+
+.ctags-dropdown::-webkit-scrollbar { width: 6px; }
+.ctags-dropdown::-webkit-scrollbar-track { background: transparent; }
+.ctags-dropdown::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
+
+/* =============================================
+   LIGHT MODE OVERRIDES
+   LeetCode adds class="dark" on <html> for dark.
+   When NOT dark, apply light styles.
+   ============================================= */
+
+html:not(.dark) .ctags-priority-badge {
+  background: rgba(255, 161, 22, 0.1);
+  color: #b37400;
+}
+
+html:not(.dark) .ctags-company-btn {
+  background: rgba(0, 0, 0, 0.05);
+  color: #b37400;
+}
+
+html:not(.dark) .ctags-company-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #996300;
+}
+
+html:not(.dark) .ctags-company-btn .ctags-lock-icon {
+  fill: #b37400;
+}
+
+html:not(.dark) .ctags-dropdown {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+html:not(.dark) .ctags-dropdown-header {
+  color: #333;
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+html:not(.dark) .ctags-chip {
+  background: rgba(0, 0, 0, 0.04);
+  color: #444;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+html:not(.dark) .ctags-chip:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #222;
+}
+
+html:not(.dark) .ctags-no-data {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+html:not(.dark) .ctags-dropdown::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
