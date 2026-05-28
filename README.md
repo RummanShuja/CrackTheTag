@@ -1,164 +1,118 @@
-# 🔓 CrackTheTag
+# CrackTheTag
 
-**Unlock company tags on LeetCode problems — for free.**
+> Chrome extension that unlocks LeetCode company tags and adds priority labels (High / Medium / Low) so students can stop wasting days on questions that don't really help them prepare.
 
-CrackTheTag is a Chrome extension that reveals which companies ask every LeetCode question, without needing a premium subscription.
-
-[Install from Chrome Web Store](https://chromewebstore.google.com/detail/ojiifgpoaehndflkpfmlfmgfglppndem)
+**Live on the Chrome Web Store** · **160+ installs** · **95+ weekly active users** · **7 × 5-star ratings** · continuously updated based on real user feedback
 
 ---
 
-## ✨ Features
+## What it does
 
-### On LeetCode Problem Pages
-- 🏷️ **Unlocked company tags** — see which companies ask each problem
-- 🔥 **Priority badges** — High / Medium / Low importance next to the title
-- 🎨 **Native UI integration** — matches LeetCode's design perfectly
-- 🌙 **Dark + Light mode** — auto-detects your LeetCode theme
+CrackTheTag shows company tags and a priority badge (High / Medium / Low) right on every LeetCode problem page, so students prepping for OAs and interviews can quickly tell if a problem is worth their time. The popup lets you browse **3,200+ problems across 630+ companies** with search, sorting, and filtering by priority. It matches LeetCode's dark and light theme automatically, runs fully in your browser, and needs no login or signup.
 
-### In the Extension Popup
-- 📋 **Problem tab** — quick view of current problem's companies and priority
-- 🏢 **Companies tab** — browse all 90+ companies and their problems
-- 🔍 **Search** — instantly find any company
-- 🎛️ **Smart filters**
-  - Sort by: Most Problems / Importance / A→Z / Z→A
-  - Filter by priority: High / Med / Low (multi-select)
-- 💾 **Persistent filters** — your filter settings survive popup close/reopen
+## Why I built this
 
----
+While grinding LeetCode for placements, I kept wasting entire days on problems that weren't actually relevant to the OAs or interviews I was targeting. The info on *which companies actually ask this question and how often* was locked behind LeetCode Premium, so most students, myself included, end up solving by random feel instead of by priority. I also wanted to build something that real users would actually use, not just a portfolio project. When I realised every student I knew was facing the same issue, I built CrackTheTag for myself and shipped it. It's now used by around 95 people every week and rated 5 stars by everyone who's left a review.
 
-## 📸 Screenshots
-![img1](https://github.com/RummanShuja/CrackTheTag/blob/4a686a5fff88b1c3a93b5cc76de44c3e8dab0d9d/screenshots/img1.png?raw=true)
+## How to run it
 
-![img2](https://github.com/RummanShuja/CrackTheTag/blob/4a686a5fff88b1c3a93b5cc76de44c3e8dab0d9d/screenshots/img2.png?raw=true)
+**Install from the Chrome Web Store:**
+👉 **[Install on Chrome Web Store](https://chromewebstore.google.com/detail/ojiifgpoaehndflkpfmlfmgfglppndem?utm_source=item-share-cb)**
 
-![img3](https://github.com/RummanShuja/CrackTheTag/blob/4a686a5fff88b1c3a93b5cc76de44c3e8dab0d9d/screenshots/img3.png?raw=true)
+Once installed:
 
-![img4](https://github.com/RummanShuja/CrackTheTag/blob/4a686a5fff88b1c3a93b5cc76de44c3e8dab0d9d/screenshots/img4.png?raw=true)
+1. Open any LeetCode problem — the company tags and priority badge show up right on the page.
+2. Click the extension icon in the toolbar to open the company browser (search, sort, filter by priority).
 
----
+## Architecture decisions
 
-## 🚀 Install
+These are the main design choices I had to make, and why I didn't go with the obvious option.
 
-### Chrome Web Store
-🕐 Currently under review. Link will be added once approved.
+### 1. MutationObserver + debounce + slug-tracking — *not* `tabs.onUpdated`
 
-### Manual Install (Developer)
-1. Clone this repo
-   ```bash
-   git clone https://github.com/RummanShuja/CrackTheTag.git
-   ```
-2. Add your `final.json` data file to `company_data/final/`
-3. Open `chrome://extensions` in Chrome
-4. Enable **Developer Mode** (top right)
-5. Click **Load unpacked** → select the `CrackTheTag` folder
-6. Navigate to any LeetCode problem — done!
+This was the hardest part. LeetCode is a Single Page App: when you click from one problem to the next, the page **never actually reloads**. So `DOMContentLoaded` or a one-time content script only runs the first time and goes silent after that.
 
----
+The obvious fix is `chrome.tabs.onUpdated` to listen for URL changes. Clean code, but the wrong tool — it misses LeetCode's in-app next/prev buttons, and it fires *before* the new problem's content has loaded into the page. So my badge would show up on the wrong page, or on a blank one.
 
-## 📁 Project Structure
+What I actually built:
 
-```
-CrackTheTag/
-├── manifest.json          # Extension config (Manifest V3)
-├── background.js          # Service worker — loads data, handles tab updates
-├── contentScript.js       # Injects UI into LeetCode pages
-├── styles.css             # Injected page styles (dark + light mode)
-├── popup.html             # Extension popup markup
-├── popup.js               # Popup logic — tabs, filters, search
-├── popup.css              # Popup styles
-├── icons/
-│   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
-├── screenshots/
-│   ├── img1.png
-│   ├── img2.png
-│   ├── img3.png
-│   └── img4.png
-└── company_data/
-    └── final/
-        └── final.json     # Company frequency data (not included in repo)
-```
+- A **`MutationObserver`** that watches the problem container, so every in-app switch is caught
+- A **600 ms debounce** because LeetCode's page updates around 50 times during a single problem switch (the editor mounts, panels resize, theme redraws) — without debouncing, the badge would render 4–5 times and show stale data
+- **Slug tracking** (`/problems/<slug>/`) so the observer only re-renders when the user actually moves to a new problem, not on every small UI change
+- **Cleaning up the old badge** before adding a new one — otherwise duplicate badges piled up as users navigated
+- An **`isRendering` flag** to stop the bug where two debounced calls fire back-to-back
 
----
+### 2. Dataset bundled inside the extension (for now), not fetched from a backend
 
-## 🛠️ Tech Stack
+The 3,200-problem dataset ships as a JSON file inside the extension. The "right" answer at scale is a backend with versioned data behind a CDN, and I cover that in the 4-more-weeks section.
 
-- **Chrome Extension Manifest V3**
-- **Vanilla JavaScript** — zero dependencies, zero frameworks
-- **CSS** — hand-written, no preprocessors
-- **Chrome Storage API** — for persisting filter state
+For now, bundling won the tradeoff: no infra cost, no extra load time, no privacy questions about tracking users, and data updates go through the regular Chrome Web Store review flow — which gives me free versioning, signed releases, and a clean rollback if something breaks. That tradeoff stops making sense at around 10× the current users, so it's a choice I made for now, not forever.
 
----
+### 3. Theme detection from LeetCode's `<html>` class, not `prefers-color-scheme`
 
-## 📊 Data
+`prefers-color-scheme` works *until* someone manually overrides LeetCode's theme. I watch LeetCode's own theme class instead, so the badge always matches the page — even if the user switches themes mid-session.
 
-The company frequency data (`final.json`) is **not included** in this repository.
+### 4. Filter state in `chrome.storage.local`, not `sessionStorage`
 
-The data covers **3200+ LeetCode problems** across **630+ companies** including Amazon, Google, Microsoft, Meta, Apple, and more.
+The popup unmounts every time the user closes it. `sessionStorage` would lose all the filter settings between opens, which is very frustrating when you've set up a multi-priority filter. `chrome.storage.local` keeps the state safe across popup closes and even browser restarts, and is the right Manifest V3 way to do it.
 
-Each problem includes:
-- List of companies that ask it
-- Frequency score per company
-- Priority classification (High / Medium / Low)
+## What I used AI for
 
-The extension on the Chrome Web Store comes pre-bundled with this data.
+Honest breakdown:
 
-### Attribution
+**AI use (mainly Claude):**
 
-The company data used in this extension is derived from the dataset maintained by:
+- The popup UI layout, HTML structure, and most of the CSS
+- The standard Manifest V3 setup files and the initial folder structure
+- First drafts of the search, sort, and filter handlers in the popup
+- Theme-matching CSS variables and the dark / light mode styles
+- The company browse list rendering in the popup
 
-👉 [LeetCode CompanyWise Interview Questions](https://github.com/snehasishroy/leetcode-companywise-interview-questions) by [@snehasishroy](https://github.com/snehasishroy)
+**Written and owned by me — the parts that make it actually work in production:**
 
-The raw data has been processed using recency-weighted scoring across multiple time windows (30 days, 3 months, 6 months, 6+ months) and classified into priority tiers for use in this extension.
+- **The entire content-script flow.** The `MutationObserver` setup, the 600 ms debounce, the slug-based change detection, the old-UI cleanup, and the `isRendering` flag. The AI's first try used `chrome.tabs.onUpdated` and a one-time listener — which broke on LeetCode's in-app navigation and ran before the new page content loaded. I threw that out and rewrote the whole flow myself after watching it fail in production. Every line of that file is there because I traced a specific bug.
+- **The theme-detection logic.** AI suggested `prefers-color-scheme`. After noticing that badges didn't match when they manually changed LeetCode's theme, I rewrote it as a watcher on LeetCode's own `<html>` theme class so it stays in sync the whole session. The setup, teardown, and the re-paint trigger.
+- **The render race condition fix.** AI's draft didn't remove the old badge before adding a new one, so on slower laptops users saw 3–4 stacked badges. I added the cleanup pass *and* the `isRendering` guard to stop two debounced calls from running at the same time.
+- **The data shape and how the code reads it.** How filters combine, where state is stored, the recency-weighted scoring across different time windows, and how the content script pulls data from the bundle — all decisions I made and own.
 
-**Last updated:** Feb 2026
+Short summary: AI handled the parts that don't really change how the extension works (UI, setup, styling). The parts that actually make it run reliably in production — the SPA navigation flow, the theme watcher, the render guards, I had to write and rewrite myself, because the AI's first answers kept breaking on real LeetCode usage.
+
+I use AI like a fast helper that still needs me to review the code and test it on real users. The review and the bug fixes come from me and from users.
+
+## What I would change with 4 more weeks
+
+I'd split the work in two — what users actually want, and what I'd need to scale this properly.
+
+### Product (what users actually want)
+
+- **Solved-question tracking** — a checkmark on problems you've already done. This is the top user request.
+- **Famous sheets integration** — Striver SDE, Love Babbar, NeetCode 150 — students want to track their progress against a well-known list, not just a flat set of problems.
+- **Per-sheet progress dashboard** — something like "you've finished 47 / 75 of Striver SDE" right in the popup, so the extension becomes a study companion and not just a tag-unlocker.
+
+### Platform (what production would actually need)
+
+- **Move the dataset off the bundle and behind a backend API.** Right now every data update has to go through Chrome Web Store review, which takes about 1-2 days. A versioned JSON endpoint behind a CDN would let me ship updates same-day and let me actually see which problems users open.
+- **Basic usage tracking** — anonymous counters on which problems, companies, and sheets get viewed most, so I can focus dataset accuracy on what users actually use. At 10× the current users, I'd really need this signal.
+- **Scheduled refresh pipeline** for the company-tag dataset (right now I update it by hand), with signed releases and a clear rollback path so a bad update can't break the extension for the users.
+- **Host the server on JarvisLabs.** Right now there is no server — the data ships inside the extension. If I added one (to update the data and serve it through an API), JarvisLabs would be the natural place to put it, since I'd want one cloud platform handling everything instead of stitching together two or three.
+
+If I really had 4 weeks, I'd ship the backend + tracking *first*, because they make every product feature above safer to build. Building the progress dashboard before I can see what users actually use is the wrong order.
 
 ---
 
-## 🤝 Contributing
+## Stack & data
 
-Found a bug? Have a feature idea? Contributions are welcome!
+- Chrome Extension **Manifest V3**
+- Vanilla JS, hand-written CSS, no frameworks, no build step
+- `chrome.storage.local` for state, `MutationObserver` for SPA navigation
+- Dataset: **3,200+ problems × 630+ companies**, with recency-weighted scoring across different time windows
+- `final.json` lives in `company_data/final/` (bundled with the Chrome Web Store build, not in the public repo)
+- The script that generates `final.json` is kept out of the public repo — it pulls from open community-maintained company lists and applies the recency-weighted scoring. The Chrome Web Store install includes the bundled dataset, so you can run the full extension without it.
 
-1. Fork the repo
-2. Create your branch: `git checkout -b feature/your-feature`
-3. Commit changes: `git commit -m "Add your feature"`
-4. Push: `git push origin feature/your-feature`
-5. Open a Pull Request
+## License
 
-Feel free to open an [Issue](https://github.com/RummanShuja/CrackTheTag/issues) to suggest features or report bugs.
+MIT
 
----
+## Credits
 
-## 📝 Changelog
-
-### v1.0.0
-- Initial release
-- Company tags on problem pages
-- Priority badges (High / Medium / Low)
-- Extension popup with Problem and Companies tabs
-- Search, sort, and multi-select priority filters
-- Filter state persistence across popup sessions
-- Dark and light mode support
-
----
-
-## ⚖️ License
-
-MIT License — see [LICENSE](LICENSE) for details.
-
----
-
-## ⭐ Support
-
-If CrackTheTag helps your interview prep:
-- ⭐ **Star this repo**
-- 📢 **Share** with friends who grind LeetCode
-
----
-
-<p align="center">
-  <b>Built with ☕ and frustration at locked company tags.</b>
-</p>
-
+Company-question dataset adapted from open community-maintained LeetCode company lists. Ongoing corrections come from CrackTheTag users.
