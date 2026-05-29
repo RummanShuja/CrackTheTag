@@ -113,6 +113,12 @@ If I really had 4 weeks, I'd ship the backend + tracking *first*, because they m
 
 MIT
 
-## Credits
+## Attribution
 
-Company-question dataset adapted from open community-maintained LeetCode company lists. Ongoing corrections come from CrackTheTag users.
+The company data used in this extension is derived from the dataset maintained by:
+
+👉 [LeetCode CompanyWise Interview Questions](https://github.com/snehasishroy/leetcode-companywise-interview-questions) by [@snehasishroy](https://github.com/snehasishroy)
+
+The raw data is processed using recency-weighted scoring across multiple time windows (30 days, 3 months, 6 months, 6+ months) and classified into priority tiers for use in this extension. Ongoing corrections come from CrackTheTag users.
+
+**Last updated:** Feb 2026
