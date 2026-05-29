@@ -14,6 +14,8 @@ CrackTheTag shows company tags and a priority badge (High / Medium / Low) right 
 
 While grinding LeetCode for placements, I kept wasting entire days on problems that weren't actually relevant to the OAs or interviews I was targeting. The info on *which companies actually ask this question and how often* was locked behind LeetCode Premium, so most students, myself included, end up solving by random feel instead of by priority. I also wanted to build something that real users would actually use, not just a portfolio project. When I realised every student I knew was facing the same issue, I built CrackTheTag for myself and shipped it. It's now used by around 95 people every week and rated 5 stars by everyone who's left a review.
 
+The smallest useful version was just the unlocked company tags injected into the LeetCode problem page — no popup, no priority labels, no filtering. Once that worked end-to-end and I knew the data injection was reliable across navigation, I added the priority scoring, the company browser popup, and the theme matching on top.
+
 ## How to run it
 
 **Install from the Chrome Web Store:**
